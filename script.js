@@ -304,13 +304,32 @@ function triggerConfetti() {
     }
 }
 
+let isMuted = false;
+let chimeAudio = new Audio('chime.mp3');
+chimeAudio.volume = 0.2;
+
+function toggleMute() {
+    isMuted = !isMuted;
+    const muteIcon = document.getElementById('mute-icon');
+    
+    muteIcon.innerText = isMuted ? '🔇' : '🔊';
+    
+    if (isMuted) {
+        chimeAudio.pause();
+    }
+    else{
+        chimeAudio.play();
+    }
+}
 
 function playSoftChime() {
+    if (isMuted) return; 
+
+    if (!chimeAudio.paused) {
+        return;
+    }
     
-    const audio = new Audio('chime.mp3');
-    audio.volume = 0.2;
-    audio.play().catch(e => console.log("Audio play failed (user interaction needed first)"));
-    console.log("🎵 *Soft Chime Sound*");
+    chimeAudio.play().catch(e => console.log("Audio play failed."));
 }
 
 function initMusicPlayer() {
